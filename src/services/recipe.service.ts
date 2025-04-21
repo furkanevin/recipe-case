@@ -1,6 +1,22 @@
-// Type definitions
-import { getApiKey, handleApiResponse, DEFAULT_CACHE_DURATION } from "@/lib/api-utils";
+export async function handleApiResponse<T>(response: Response): Promise<T> {
+  if (!response.ok) {
+    if (response.status === 404) {
+      throw new Error("Resource not found");
+    }
+    throw new Error(`API request failed with status ${response.status}`);
+  }
+  return await response.json();
+}
 
+export function getApiKey(): string {
+  const apiKey = process.env.NEXT_PUBLIC_SPOONACULAR_API_KEY;
+  if (!apiKey) {
+    throw new Error("API key is not configured");
+  }
+  return apiKey;
+}
+
+export const DEFAULT_CACHE_DURATION = 60;
 // Basic recipe type
 export interface Recipe {
   id: number;
@@ -86,47 +102,46 @@ export interface SearchParams {
   number?: number;
 }
 
-
-export async function searchRecipes(params: SearchParams): Promise<RecipeSearchResponse> {
+export async function searchRecipes(
+  params: SearchParams
+): Promise<RecipeSearchResponse> {
   const apiKey = getApiKey();
-  
+
   // Build query parameters
   const queryParams = new URLSearchParams();
   queryParams.append("apiKey", apiKey);
-  
+
   // Add all search params that are defined
   Object.entries(params).forEach(([key, value]) => {
     if (value !== undefined && value !== null && value !== "") {
       queryParams.append(key, value.toString());
     }
   });
-  
+
   // Set default number of results if not specified
   if (!params.number) {
     queryParams.append("number", "12");
   }
-  
+
   // Make the API request
   const response = await fetch(
     `https://api.spoonacular.com/recipes/complexSearch?${queryParams.toString()}`,
     { next: { revalidate: DEFAULT_CACHE_DURATION } }
   );
-  
+
   return handleApiResponse<RecipeSearchResponse>(response);
 }
 
-
 export async function getRecipeDetails(id: string): Promise<RecipeDetails> {
   const apiKey = getApiKey();
-  
+
   const response = await fetch(
     `https://api.spoonacular.com/recipes/${id}/information?apiKey=${apiKey}`,
     { next: { revalidate: DEFAULT_CACHE_DURATION } }
   );
-  
+
   return handleApiResponse<RecipeDetails>(response);
 }
-
 
 export function formatSearchSummary(params: {
   query?: string;
@@ -136,30 +151,30 @@ export function formatSearchSummary(params: {
   maxReadyTime?: number;
 }): string {
   const parts: string[] = [];
-  
+
   if (params.query) {
     parts.push(`"${params.query}"`);
   }
-  
+
   if (params.cuisine) {
     parts.push(params.cuisine);
   }
-  
+
   if (params.diet) {
     parts.push(params.diet);
   }
-  
+
   if (params.type) {
     parts.push(params.type);
   }
-  
+
   if (params.maxReadyTime) {
     parts.push(`Ready in ${params.maxReadyTime} min`);
   }
-  
+
   if (parts.length === 0) {
     return "All recipes";
   }
-  
+
   return parts.join(" • ");
-} 
+}

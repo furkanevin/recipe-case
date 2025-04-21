@@ -1,7 +1,8 @@
-'use client';
+"use client";
 
-import { useEffect } from 'react';
-import Link from 'next/link';
+import { useEffect } from "react";
+import Link from "next/link";
+import { FiAlertCircle } from "react-icons/fi";
 
 export default function Error({
   error,
@@ -11,7 +12,7 @@ export default function Error({
   reset: () => void;
 }) {
   useEffect(() => {
-    console.error('Home page error:', error);
+    console.error("Home page error:", error);
   }, [error]);
 
   return (
@@ -19,17 +20,18 @@ export default function Error({
       <div className="flex-1 flex flex-col items-center justify-center p-6">
         <div className="text-center">
           <div className="inline-flex rounded-full bg-red-100 p-6 mb-6">
-            <svg className="h-12 w-12 text-red-600" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 8v4m0 4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z" />
-            </svg>
+            <FiAlertCircle className="h-12 w-12 text-red-600" />
           </div>
-          
-          <h1 className="text-3xl font-bold mb-4 text-gray-800 dark:text-gray-100">Something went wrong!</h1>
-          
+
+          <h1 className="text-3xl font-bold mb-4 text-gray-800 dark:text-gray-100">
+            Something went wrong!
+          </h1>
+
           <p className="mb-8 text-gray-600 dark:text-gray-300 max-w-md mx-auto">
-            We encountered an error while loading this page. Please try again later.
+            We encountered an error while loading this page. Please try again
+            later.
           </p>
-          
+
           <div className="flex flex-col sm:flex-row gap-4 justify-center">
             <button
               onClick={reset}
@@ -37,8 +39,8 @@ export default function Error({
             >
               Try again
             </button>
-            
-            <Link 
+
+            <Link
               href="/"
               className="inline-flex items-center justify-center px-6 py-3 bg-gray-200 text-gray-800 dark:bg-gray-700 dark:text-gray-200 font-medium rounded-full hover:bg-gray-300 dark:hover:bg-gray-600 transition-all duration-300 transform hover:scale-[1.02] active:scale-[0.98]"
             >
@@ -49,4 +51,4 @@ export default function Error({
       </div>
     </main>
   );
-} 
+}

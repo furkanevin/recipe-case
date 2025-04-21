@@ -1,18 +1,23 @@
 import Image from "next/image";
-import { getRecipeDetails, type RecipeDetails, type Ingredient, type Instruction } from "@/services/recipe.service";
+import {
+  getRecipeDetails,
+  type RecipeDetails,
+  type Ingredient,
+  type Instruction,
+} from "@/services/recipe.service";
 import Card from "@/components/ui/Card";
-import { ClockIcon, ServingsIcon, HeartIcon } from "@/components/icons/IconCollection";
+import { FiClock, FiUsers, FiHeart } from "react-icons/fi";
 
 // Recipe stat display component
-const RecipeStat = ({ 
-  icon, 
-  label, 
-  value, 
+const RecipeStat = ({
+  icon,
+  label,
+  value,
   bgColor = "bg-blue-50 dark:bg-gray-700",
-  iconColor = "text-blue-500"
-}: { 
-  icon: React.ReactNode; 
-  label: string; 
+  iconColor = "text-blue-500",
+}: {
+  icon: React.ReactNode;
+  label: string;
   value: string | number;
   bgColor?: string;
   iconColor?: string;
@@ -20,7 +25,9 @@ const RecipeStat = ({
   <div className={`flex flex-col items-center p-4 ${bgColor} rounded-xl`}>
     <div className={`${iconColor} mb-2`}>{icon}</div>
     <span className="text-sm text-gray-500 dark:text-gray-400">{label}</span>
-    <span className="text-lg font-semibold text-gray-800 dark:text-gray-200">{value}</span>
+    <span className="text-lg font-semibold text-gray-800 dark:text-gray-200">
+      {value}
+    </span>
   </div>
 );
 
@@ -43,33 +50,37 @@ const IngredientItem = ({ ingredient }: { ingredient: Ingredient }) => (
 );
 
 // Instruction step component
-const InstructionStep = ({ step }: { step: { number: number; step: string } }) => (
+const InstructionStep = ({
+  step,
+}: {
+  step: { number: number; step: string };
+}) => (
   <li className="bg-gray-50 dark:bg-gray-700 rounded-lg p-4">
     <div className="flex items-start">
       <span className="flex-shrink-0 bg-blue-100 dark:bg-blue-900 text-blue-600 dark:text-blue-300 font-bold rounded-full h-7 w-7 flex items-center justify-center mr-3">
         {step.number}
       </span>
-      <span className="text-gray-700 dark:text-gray-300">
-        {step.step}
-      </span>
+      <span className="text-gray-700 dark:text-gray-300">{step.step}</span>
     </div>
   </li>
 );
 
 // Section header component
 const SectionHeader = ({ title }: { title: string }) => (
-  <h2 className="text-2xl font-semibold text-gray-800 dark:text-gray-200 mb-4">{title}</h2>
+  <h2 className="text-2xl font-semibold text-gray-800 dark:text-gray-200 mb-4">
+    {title}
+  </h2>
 );
 
 // Component to display recipe details
 export default async function RecipeDetailsComponent({ id }: { id: string }) {
   // Fetch recipe details using the service function
   const recipe: RecipeDetails = await getRecipeDetails(id);
-  
+
   const imageContainer = (
     <>
-      <Image 
-        src={recipe.image} 
+      <Image
+        src={recipe.image}
         alt={recipe.title}
         fill
         priority
@@ -83,7 +94,10 @@ export default async function RecipeDetailsComponent({ id }: { id: string }) {
         </h1>
         <div className="flex flex-wrap gap-2 mt-4">
           {recipe.dishTypes.map((type, index) => (
-            <span key={index} className="px-3 py-1 bg-blue-500/80 text-white text-sm font-medium rounded-full">
+            <span
+              key={index}
+              className="px-3 py-1 bg-blue-500/80 text-white text-sm font-medium rounded-full"
+            >
               {type}
             </span>
           ))}
@@ -95,35 +109,35 @@ export default async function RecipeDetailsComponent({ id }: { id: string }) {
   const cardContent = (
     <div className="p-6 md:p-8">
       <div className="grid grid-cols-1 sm:grid-cols-3 gap-6 mb-8">
-        <RecipeStat 
-          icon={<ClockIcon />} 
-          label="Ready in" 
-          value={`${recipe.readyInMinutes} min`} 
+        <RecipeStat
+          icon={<FiClock className="h-8 w-8" />}
+          label="Ready in"
+          value={`${recipe.readyInMinutes} min`}
         />
-        <RecipeStat 
-          icon={<ServingsIcon />} 
-          label="Servings" 
+        <RecipeStat
+          icon={<FiUsers className="h-8 w-8" />}
+          label="Servings"
           value={recipe.servings}
           bgColor="bg-green-50 dark:bg-gray-700"
-          iconColor="text-green-500" 
+          iconColor="text-green-500"
         />
-        <RecipeStat 
-          icon={<HeartIcon />} 
-          label="Health Score" 
+        <RecipeStat
+          icon={<FiHeart className="h-8 w-8" />}
+          label="Health Score"
           value={recipe.healthScore}
           bgColor="bg-yellow-50 dark:bg-gray-700"
-          iconColor="text-yellow-500" 
+          iconColor="text-yellow-500"
         />
       </div>
-      
+
       <div className="mb-10">
         <SectionHeader title="About this recipe" />
-        <div 
+        <div
           className="prose dark:prose-invert max-w-none text-gray-600 dark:text-gray-300"
           dangerouslySetInnerHTML={{ __html: recipe.summary }}
         ></div>
       </div>
-      
+
       <div className="mb-10">
         <SectionHeader title="Ingredients" />
         <ul className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-3">
@@ -132,7 +146,7 @@ export default async function RecipeDetailsComponent({ id }: { id: string }) {
           ))}
         </ul>
       </div>
-      
+
       <div>
         <SectionHeader title="Instructions" />
         {recipe.analyzedInstructions.length > 0 ? (
@@ -160,13 +174,10 @@ export default async function RecipeDetailsComponent({ id }: { id: string }) {
       </div>
     </div>
   );
-  
+
   return (
-    <Card
-      className="overflow-hidden"
-      imageContainer={imageContainer}
-    >
+    <Card className="overflow-hidden" imageContainer={imageContainer}>
       {cardContent}
     </Card>
   );
-} 
+}

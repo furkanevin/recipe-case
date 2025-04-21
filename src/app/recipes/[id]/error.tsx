@@ -1,7 +1,8 @@
-'use client';
+"use client";
 
-import { useEffect } from 'react';
-import BackButton from '@/components/ui/BackButton';
+import { useEffect } from "react";
+import BackButton from "@/components/ui/BackButton";
+import { FiAlertCircle, FiRefreshCw } from "react-icons/fi";
 
 export default function Error({
   error,
@@ -11,7 +12,7 @@ export default function Error({
   reset: () => void;
 }) {
   useEffect(() => {
-    console.error('Recipe detail page error:', error);
+    console.error("Recipe detail page error:", error);
   }, [error]);
 
   return (
@@ -19,30 +20,29 @@ export default function Error({
       <div className="container mx-auto px-4 py-10">
         <div className="text-center py-16 px-4">
           <div className="inline-flex rounded-full bg-red-100 p-6 mb-6">
-            <svg className="h-12 w-12 text-red-600" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 8v4m0 4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z" />
-            </svg>
+            <FiAlertCircle className="h-12 w-12 text-red-600" />
           </div>
-          <h2 className="text-2xl font-bold mb-4 text-gray-800 dark:text-gray-200">Error loading recipe</h2>
+          <h2 className="text-2xl font-bold mb-4 text-gray-800 dark:text-gray-200">
+            Error loading recipe
+          </h2>
           <p className="mb-8 text-gray-600 dark:text-gray-400 max-w-md mx-auto">
-            There was a problem fetching this recipe. This might be due to API limits, network issues, or an invalid API key.
+            There was a problem fetching this recipe. This might be due to API
+            limits, network issues, or an invalid API key.
           </p>
-          
+
           <div className="flex flex-col sm:flex-row gap-4 justify-center">
             <button
               onClick={reset}
               className="inline-flex items-center justify-center px-6 py-3 bg-gradient-to-r from-blue-600 to-indigo-600 text-white font-medium rounded-full shadow-lg hover:from-blue-700 hover:to-indigo-700 transition-all duration-300 transform hover:scale-[1.02] active:scale-[0.98]"
             >
-              <svg className="mr-2 h-5 w-5" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20" fill="currentColor">
-                <path fillRule="evenodd" d="M4 2a1 1 0 011 1v2.101a7.002 7.002 0 0111.601 2.566 1 1 0 11-1.885.666A5.002 5.002 0 005.999 7H9a1 1 0 010 2H4a1 1 0 01-1-1V3a1 1 0 011-1zm.008 9.057a1 1 0 011.276.61A5.002 5.002 0 0014.001 13H11a1 1 0 110-2h5a1 1 0 011 1v5a1 1 0 11-2 0v-2.101a7.002 7.002 0 01-11.601-2.566 1 1 0 01.61-1.276z" clipRule="evenodd" />
-              </svg>
+              <FiRefreshCw className="mr-2 h-5 w-5" />
               Try again
             </button>
-            
+
             <BackButton href=".." variant="secondary" />
           </div>
         </div>
       </div>
     </main>
   );
-} 
+}

@@ -1,26 +1,26 @@
-import React from 'react';
-import Button from '@/components/ui/Button';
-import { BackIcon } from '@/components/icons/IconCollection';
+import React from "react";
+import Button from "@/components/ui/Button";
+import { FiArrowLeft } from "react-icons/fi";
 
 type BackButtonProps = {
   href?: string;
-  variant?: 'primary' | 'secondary' | 'link';
+  variant?: "primary" | "secondary" | "link";
   className?: string;
   text?: string;
 };
 
 const BackButton: React.FC<BackButtonProps> = ({
-  href = '..',
-  variant = 'primary',
-  className = '',
-  text = 'Back to Search'
+  href = "..",
+  variant = "primary",
+  className = "",
+  text = "Back to Search",
 }) => {
   return (
     <Button href={href} variant={variant} className={className}>
-      <BackIcon className="mr-2 size-5" />
+      <FiArrowLeft className="mr-2 h-4 w-4" />
       {text}
     </Button>
   );
 };
 
-export default BackButton; 
+export default BackButton;

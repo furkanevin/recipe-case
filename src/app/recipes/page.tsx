@@ -1,24 +1,26 @@
-import { Suspense } from 'react';
+import { Suspense } from "react";
 import { notFound } from "next/navigation";
 import RecipeList from "@/components/RecipeList";
 import Container from "@/components/ui/Container";
-import BackButton from '@/components/ui/BackButton';
-import RecipeListSkeleton from '@/components/skeletons/RecipeListSkeleton';
+import BackButton from "@/components/ui/BackButton";
+import RecipeListSkeleton from "@/components/skeletons/RecipeListSkeleton";
 
 // Cache revalidation period (1 minute = 60 seconds)
 export const revalidate = 60;
 
 // Only validate if at least one search parameter is provided
-const validateSearchParams = (params: { [key: string]: string | string[] | undefined }) => {
+const validateSearchParams = (params: {
+  [key: string]: string | string[] | undefined;
+}) => {
   const { query, cuisine, maxReadyTime } = params;
   return Boolean(query || cuisine || maxReadyTime);
 };
 
 interface RecipesPageProps {
-  searchParams: { 
-    query?: string; 
-    cuisine?: string; 
-    maxReadyTime?: string; 
+  searchParams: {
+    query?: string;
+    cuisine?: string;
+    maxReadyTime?: string;
   };
 }
 
@@ -38,13 +40,13 @@ export default function RecipesPage({ searchParams }: RecipesPageProps) {
           <BackButton variant="link" href="/" />
         </div>
         <Suspense fallback={<RecipeListSkeleton />}>
-          <RecipeList 
-            query={query} 
-            cuisine={cuisine} 
-            maxReadyTime={maxReadyTime} 
+          <RecipeList
+            query={query}
+            cuisine={cuisine}
+            maxReadyTime={maxReadyTime}
           />
         </Suspense>
       </Container>
     </main>
   );
-} 
+}

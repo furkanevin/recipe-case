@@ -2,18 +2,39 @@
 
 import { useState, useEffect } from "react";
 import { useRouter } from "next/navigation";
-import Button from "@/app/components/ui/Button";
-import Card from "@/app/components/ui/Card";
-import { SearchIcon, CuisineIcon, TimeIcon, ChevronDownIcon } from "@/app/components/icons/IconCollection";
+import Button from "@/components/ui/Button";
+import Card from "@/components/ui/Card";
+import { FiSearch, FiGlobe, FiClock, FiChevronDown } from "react-icons/fi";
 
 // Array of cuisine options from Spoonacular API
 const CUISINE_OPTIONS = [
-  "African", "Asian", "American", "British", "Cajun", 
-  "Caribbean", "Chinese", "Eastern European", "European", 
-  "French", "German", "Greek", "Indian", "Irish", "Italian", 
-  "Japanese", "Jewish", "Korean", "Latin American", "Mediterranean", 
-  "Mexican", "Middle Eastern", "Nordic", "Southern", "Spanish", 
-  "Thai", "Vietnamese"
+  "African",
+  "Asian",
+  "American",
+  "British",
+  "Cajun",
+  "Caribbean",
+  "Chinese",
+  "Eastern European",
+  "European",
+  "French",
+  "German",
+  "Greek",
+  "Indian",
+  "Irish",
+  "Italian",
+  "Japanese",
+  "Jewish",
+  "Korean",
+  "Latin American",
+  "Mediterranean",
+  "Mexican",
+  "Middle Eastern",
+  "Nordic",
+  "Southern",
+  "Spanish",
+  "Thai",
+  "Vietnamese",
 ];
 
 export default function SearchForm() {
@@ -29,9 +50,9 @@ export default function SearchForm() {
   useEffect(() => {
     const { query, cuisine, maxReadyTime } = formData;
     setIsNextEnabled(
-      query.trim() !== "" || 
-      cuisine !== "" || 
-      (typeof maxReadyTime === "number" && maxReadyTime > 0)
+      query.trim() !== "" ||
+        cuisine !== "" ||
+        (typeof maxReadyTime === "number" && maxReadyTime > 0)
     );
   }, [formData]);
 
@@ -40,16 +61,16 @@ export default function SearchForm() {
     e: React.ChangeEvent<HTMLInputElement | HTMLSelectElement>
   ) => {
     const { id, value } = e.target;
-    
+
     if (id === "time") {
       setFormData({
         ...formData,
-        maxReadyTime: value === "" ? "" : parseInt(value, 10)
+        maxReadyTime: value === "" ? "" : parseInt(value, 10),
       });
     } else {
       setFormData({
         ...formData,
-        [id]: value
+        [id]: value,
       });
     }
   };
@@ -57,22 +78,22 @@ export default function SearchForm() {
   // Handle form submission
   const handleSearch = () => {
     const { query, cuisine, maxReadyTime } = formData;
-    
+
     // Construct query parameters
     const params = new URLSearchParams();
-    
+
     if (query.trim()) {
       params.append("query", query.trim());
     }
-    
+
     if (cuisine) {
       params.append("cuisine", cuisine);
     }
-    
+
     if (typeof maxReadyTime === "number" && maxReadyTime > 0) {
       params.append("maxReadyTime", maxReadyTime.toString());
     }
-    
+
     // Navigate to recipes page with search parameters
     router.push(`/recipes?${params.toString()}`);
   };
@@ -80,7 +101,10 @@ export default function SearchForm() {
   return (
     <Card className="w-full max-w-lg p-8 transition-all duration-300 hover:shadow-2xl relative z-10">
       <div className="mb-6">
-        <label htmlFor="query" className="block text-sm font-medium mb-2 text-gray-700 dark:text-gray-300">
+        <label
+          htmlFor="query"
+          className="block text-sm font-medium mb-2 text-gray-700 dark:text-gray-300"
+        >
           What would you like to cook?
         </label>
         <div className="relative">
@@ -93,13 +117,16 @@ export default function SearchForm() {
             onChange={handleInputChange}
           />
           <span className="absolute left-3 top-3.5 text-gray-400">
-            <SearchIcon />
+            <FiSearch className="h-5 w-5" />
           </span>
         </div>
       </div>
-      
+
       <div className="mb-6">
-        <label htmlFor="cuisine" className="block text-sm font-medium mb-2 text-gray-700 dark:text-gray-300">
+        <label
+          htmlFor="cuisine"
+          className="block text-sm font-medium mb-2 text-gray-700 dark:text-gray-300"
+        >
           Cuisine Type
         </label>
         <div className="relative">
@@ -117,16 +144,19 @@ export default function SearchForm() {
             ))}
           </select>
           <span className="absolute left-3 top-3.5 text-gray-400">
-            <CuisineIcon />
+            <FiGlobe className="h-5 w-5" />
           </span>
           <span className="absolute right-3 top-3.5 pointer-events-none text-gray-400">
-            <ChevronDownIcon />
+            <FiChevronDown className="h-5 w-5" />
           </span>
         </div>
       </div>
-      
+
       <div className="mb-8">
-        <label htmlFor="time" className="block text-sm font-medium mb-2 text-gray-700 dark:text-gray-300">
+        <label
+          htmlFor="time"
+          className="block text-sm font-medium mb-2 text-gray-700 dark:text-gray-300"
+        >
           Maximum Preparation Time
         </label>
         <div className="relative">
@@ -140,19 +170,19 @@ export default function SearchForm() {
             onChange={handleInputChange}
           />
           <span className="absolute left-3 top-3.5 text-gray-400">
-            <TimeIcon />
+            <FiClock className="h-5 w-5" />
           </span>
         </div>
       </div>
-      
+
       <Button
         onClick={handleSearch}
         disabled={!isNextEnabled}
         className="w-full"
-        variant={isNextEnabled ? 'primary' : undefined}
+        variant={isNextEnabled ? "primary" : undefined}
       >
         Find Recipes
       </Button>
     </Card>
   );
-} 
+}
